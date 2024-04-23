@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 
 const getSongsByUserId = async (): Promise<Song[]> => {
   const supabase = createServerComponentClient({
-    cookies
+    cookies: cookies
   });
 
   const { data: sessionData, error: sessionError } =
@@ -20,7 +20,7 @@ const getSongsByUserId = async (): Promise<Song[]> => {
   const { data, error } = await supabase
     .from('songs')
     .select('*')
-    .eq('user_id', sessionData.session?.user.id)
+    .eq('user_id', sessionData?.session?.user?.id)
     .order('created_at', { ascending: false });
 
   if (error) {

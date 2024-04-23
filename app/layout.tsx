@@ -23,7 +23,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const userSongs = await getSongsByUserId();
-  console.log(userSongs);
 
   return (
     <html lang='en'>
