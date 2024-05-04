@@ -1,12 +1,12 @@
 import { User } from '@supabase/auth-helpers-nextjs';
-
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { Subscription, UserDetails } from '@/types';
 import {
   useSessionContext,
   useUser as useSupaUser
 } from '@supabase/auth-helpers-react';
+
+import { Subscription, UserDetails } from '@/types';
 
 type UserContextType = {
   accessToken: string | null;
@@ -30,18 +30,22 @@ export const MyUserContextProvider = (props: Props) => {
     isLoading: isLoadingUser,
     supabaseClient: supabase
   } = useSessionContext();
+
   const user = useSupaUser();
+
   const accessToken = session?.access_token ?? null;
+
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
 
   const getUserDetails = () => supabase.from('users').select('*').single();
+
   const getSubscription = () =>
     supabase
       .from('subscriptions')
-      .select('*,prices(*, products(*))')
-      .in('status', ['trailing', 'active'])
+      .select('*, prices(*, products(*))')
+      .in('status', ['trialing', 'active'])
       .single();
 
   useEffect(() => {
@@ -84,7 +88,7 @@ export const MyUserContextProvider = (props: Props) => {
 export const useUser = () => {
   const context = useContext(UserContext);
   if (context === undefined) {
-    throw new Error('useUser must be used within a MyUserContextProvider');
+    throw new Error('useUser must be used within MyUserContextProvider');
   }
   return context;
 };

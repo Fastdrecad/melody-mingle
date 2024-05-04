@@ -78,6 +78,7 @@ const createOrRetrieveCustomer = async ({
     const { error: supabaseError } = await supabaseAdmin
       .from('customers')
       .insert([{ id: uuid, stripe_customer_id: customer.id }]);
+
     if (supabaseError) {
       throw supabaseError;
     }
@@ -110,6 +111,7 @@ const copyBillingDetailsToCustomer = async (
 
   if (error) throw error;
 };
+
 const manageSubscriptionStatusChange = async (
   subscriptionId: string,
   customerId: string,
