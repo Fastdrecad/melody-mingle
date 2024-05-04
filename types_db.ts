@@ -50,14 +50,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_liked_songs_song_id_fkey"
+            foreignKeyName: "liked_songs_song_id_fkey"
             columns: ["song_id"]
             isOneToOne: false
             referencedRelation: "songs"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_liked_songs_user_id_fkey"
+            foreignKeyName: "liked_songs_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -172,7 +172,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_songs_user_id_fkey"
+            foreignKeyName: "songs_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"

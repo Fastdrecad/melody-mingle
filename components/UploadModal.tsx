@@ -1,16 +1,17 @@
 'use client';
 
 import uniqid from 'uniqid';
-import useUploadModal from '@/hooks/useUploadModal';
-import Modal from './Modal';
+import toast from 'react-hot-toast';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useRouter } from 'next/navigation';
+
+import useUploadModal from '@/hooks/useUploadModal';
+import { useUser } from '@/hooks/useUser';
+import Modal from './Modal';
 import { useState } from 'react';
 import Input from './Input';
 import Button from './Button';
-import toast from 'react-hot-toast';
-import { useUser } from '@/hooks/useUser';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { useRouter } from 'next/navigation';
 
 const UploadModal = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +28,7 @@ const UploadModal = () => {
       image: null
     }
   });
+
   const handleOnChange = (open: boolean) => {
     if (!open) {
       reset();

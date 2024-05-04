@@ -31,11 +31,12 @@ const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
         .from('liked_songs')
         .select('*')
         .eq('user_id', user.id)
-        .eq('song_id', songId)
-        .single();
+        .eq('song_id', songId);
 
-      if (!error) {
+      if (!error && data.length > 0) {
         setIsLiked(true);
+      } else {
+        setIsLiked(false);
       }
     };
 
@@ -46,32 +47,30 @@ const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
 
   const handleLike = async () => {
     if (!user) {
-      return authModal.onOpen();
+      authModal.onOpen();
+      return;
     }
 
-    if (isLiked) {
-      const { error } = await supabaseClient
-        .from('liked_songs')
-        .delete()
-        .eq('user_id', user.id)
-        .eq('song_id', songId);
+    const newState = !isLiked;
+    setIsLiked(newState);
 
-      if (error) {
-        toast.error(error.message);
-      } else {
-        setIsLiked(false);
-      }
+    const action = newState
+      ? supabaseClient
+          .from('liked_songs')
+          .insert({ song_id: songId, user_id: user.id })
+      : supabaseClient
+          .from('liked_songs')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('song_id', songId);
+
+    const { error } = await action;
+
+    if (error) {
+      toast.error(error.message);
+      setIsLiked(!newState);
     } else {
-      const { error } = await supabaseClient
-        .from('liked_songs')
-        .insert({ song_id: songId, user_id: user.id });
-
-      if (error) {
-        toast.error(error.message);
-      } else {
-        setIsLiked(true);
-        toast.success('Liked!');
-      }
+      toast.success(newState ? 'Liked!' : 'Unliked!');
     }
 
     router.refresh();

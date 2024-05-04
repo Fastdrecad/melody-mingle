@@ -35,8 +35,8 @@ export async function POST(request: Request) {
     return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
   }
 
-  try {
-    if (relevantEvents.has(event.type)) {
+  if (relevantEvents.has(event.type))
+    try {
       switch (event.type) {
         case 'product.created':
         case 'product.updated':
@@ -63,21 +63,19 @@ export async function POST(request: Request) {
           if (checkoutSession.mode === 'subscription') {
             const subscriptionId = checkoutSession.subscription as string;
             await manageSubscriptionStatusChange(
-              subscriptionId,
+              subscriptionId as string,
               checkoutSession.customer as string,
               true
             );
           }
           break;
         default:
-          console.log(`Unhandled event type: ${event.type}`);
+          throw new Error(`Unhandled event type: ${event.type}`);
       }
-    } else {
-      console.log(`Received irrelevant event type: ${event.type}`);
+    } catch (error: any) {
+      console.log(`Error processing event: ${error.message}`);
+      return new NextResponse('Webhook error', { status: 400 });
     }
-  } catch (error: any) {
-    console.log(`Error processing event: ${error.message}`);
-    return new NextResponse('Webhook error', { status: 400 });
-  }
+
   return NextResponse.json({ received: true }, { status: 200 });
 }
