@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Melody Mingle
 
-## Getting Started
+> A web app for visualizing personalized music data
 
-First, run the development server:
+Built with a bunch of things, but to name a few:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- [Create Next App](https://nextjs.org/)
+- [Stripe](https://stripe.com/)
+- [Supabase](https://supabase.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+# Setup
+
+1. Clone the repository
+
+```
+$ git clone https://github.com/Fastdrecad/melody-mingle.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Create an `.env.local` file in the root of the project. Update the values for the following contents in the `.env.local` file:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+```
 
-## Learn More
+3. Install dependencies
 
-To learn more about Next.js, take a look at the following resources:
+```
+$ npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Set up your Supabase and Stripe integrations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   - **Supabase**:
 
-## Deploy on Vercel
+     - Create a new project in Supabase.
+     - Set up your database schema as required for your project.
+     - Locate your project's API keys and endpoint in the project settings and update the `.env.local` accordingly.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   - **Stripe**:
+     - Register or log in to your Stripe account.
+     - Generate API keys from the Stripe Dashboard and add them to the `.env.local`.
+     - Set up webhook endpoints in your Stripe dashboard to work with your app (for handling real-time events).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+5. **Run the application**
+
+```
+$ npm run dev
+```
+
+This command starts the development server on [http://localhost:3000](http://localhost:3000). Open this URL in your browser to view the application.
+
+# Deploying to Vercel
+
+1. Add New Project
+2. Import Git Repository
+3. Set Vercel environment variables
+4. Update Supabase URL Configuration `https://<your-app-name>.vercel.app/`
+5. Add Endpoint to Stripe and update Stripe Webhooks accordingly
