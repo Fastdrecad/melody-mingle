@@ -1,19 +1,19 @@
-import type { Metadata } from 'next';
-import { Figtree } from 'next/font/google';
-import './globals.css';
-import Sidebar from '@/components/Sidebar';
-import SupabaseProvider from '@/providers/SupabaseProvider';
-import ModalProvider from '@/providers/ModalProvider';
-import UserProvider from '@/providers/UserProvider';
-import ToasterProvider from '@/providers/ToasterProvider';
-import getSongsByUserId from '@/actions/getSongsByUserId';
-import Player from '@/components/Player';
+import getSongsByUserId from "@/actions/getSongsByUserId";
+import Player from "@/components/Player";
+import Sidebar from "@/components/Sidebar";
+import ModalProvider from "@/providers/ModalProvider";
+import SupabaseProvider from "@/providers/SupabaseProvider";
+import ToasterProvider from "@/providers/ToasterProvider";
+import UserProvider from "@/providers/UserProvider";
+import type { Metadata } from "next";
+import { Figtree } from "next/font/google";
+import "./globals.css";
 
-const font = Figtree({ subsets: ['latin'] });
+const font = Figtree({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Melody Mingle',
-  description: 'The ultimate destination for enjoying music!'
+  title: "Melody Mingle",
+  description: "The ultimate destination for enjoying music!"
 };
 
 export const revalidate = 0;
@@ -26,7 +26,7 @@ export default async function RootLayout({
   const userSongs = await getSongsByUserId();
 
   return (
-    <html lang='en'>
+    <html lang="en">
       <body className={font.className}>
         <ToasterProvider />
         <SupabaseProvider>

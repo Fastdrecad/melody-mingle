@@ -1,7 +1,7 @@
-import { Song } from '@/types';
-import usePlayer from './usePlayer';
-import useAuthModal from './useAuthModal';
-import { useUser } from './useUser';
+import { Song } from "@/types";
+import useAuthModal from "./useAuthModal";
+import usePlayer from "./usePlayer";
+import { useUser } from "./useUser";
 
 const useOnPlay = (songs: Song[]) => {
   const player = usePlayer();
@@ -13,8 +13,9 @@ const useOnPlay = (songs: Song[]) => {
       return authModal.onOpen();
     }
 
-    player.setId(id);
     player.setIds(songs.map((song) => song.id));
+    player.setIsPlaying(true);
+    player.setId(id);
   };
 
   return onPlay;

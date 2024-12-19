@@ -1,17 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Melody Mingle 🎵
 
-## Getting Started
+A modern web-based music streaming platform built with Next.js 14, React, TypeScript and Supabase.
 
-First, run the development server:
+## Features ✨
+
+- 🎵 Stream music in high quality
+- 👤 User authentication and profiles
+- ❤️ Like and save favorite songs
+- 🎨 Modern and responsive UI
+- 🎚️ Full player controls (play, pause, skip, seek)
+- 🔍 Search songs by title and artist
+- 📱 Mobile-friendly design
+
+## Tech Stack 🛠️
+
+- [Next.js 14](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Supabase](https://supabase.com/) - Backend and authentication
+- [TailwindCSS](https://tailwindcss.com/) - Styling
+- [React](https://reactjs.org/) - UI Components
+
+## Getting Started 🚀
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/melody-mingle.git
+cd melody-mingle
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Set up environment variables:
+
+Create a `.env.local` file in the root directory with:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+4. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
