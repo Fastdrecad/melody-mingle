@@ -15,7 +15,6 @@ interface LikedContentProps {
 const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
   const router = useRouter();
   const { isLoading, user } = useUser();
-
   const onPlay = useOnPlay(songs);
 
   useEffect(() => {
@@ -24,7 +23,6 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
     }
   }, [isLoading, user, router]);
 
-  // Show loading state
   if (isLoading) {
     return (
       <div className="flex flex-col gap-y-2 w-full px-6 text-neutral-400">
@@ -41,12 +39,13 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
     );
   }
 
+  // Show songs in original order (latest at the end)
   return (
     <div className="flex flex-col gap-y-2 w-full p-6">
-      {songs.map((song) => (
+      {[...songs].map((song) => (
         <div className="flex items-center gap-x-4 w-full" key={song.id}>
           <div className="flex-1">
-            <MediaItem onClick={onPlay} data={song} />
+            <MediaItem onClick={(id: string) => onPlay(id)} data={song} />
           </div>
           <LikeButton songId={song.id} />
         </div>

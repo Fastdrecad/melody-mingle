@@ -1,9 +1,12 @@
 "use client";
 
 import Slider from "@/components/Slider";
+import useAuthModal from "@/hooks/useAuthModal";
 import useDebounce from "@/hooks/useDebounce";
+import useLikedSongs from "@/hooks/useLikedSongs";
 import usePlayer from "@/hooks/usePlayer";
 import { useQueueNavigation } from "@/hooks/useQueueNavigation";
+import { useUser } from "@/hooks/useUser";
 import { Song } from "@/types";
 import debounce from "lodash/debounce";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -52,6 +55,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [volume, setVolume] = useState(1);
   const [isReady, setIsReady] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const { user } = useUser();
+  const authModal = useAuthModal();
+  const { likedSongIds } = useLikedSongs();
 
   const Icon = player.isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon =
@@ -63,31 +69,29 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       ? HiSpeakerWave
       : HiOutlineSpeakerWave;
 
-  const [play, { pause, sound, stop }] = useSound(songUrl, {
+  const [play, { pause, sound }] = useSound(songUrl, {
     volume: player.volume,
-    onplay: () => {
-      player.setIsPlaying(true);
-    },
+    onplay: () => player.setIsPlaying(true),
     onend: () => {
       if (player.repeatMode === "one") {
         play();
       } else {
-        onPlayNext();
+        const isLastSong = player.isShuffling
+          ? !player.shuffleQueue[
+              player.shuffleQueue.findIndex((id) => id === player.activeId) + 1
+            ]
+          : !player.ids[
+              player.ids.findIndex((id) => id === player.activeId) + 1
+            ];
+
+        if (isLastSong && player.repeatMode !== "all") {
+          player.setIsPlaying(false);
+        } else {
+          onPlayNext();
+        }
       }
     },
     onpause: () => player.setIsPlaying(false),
-    onload: () => {
-      setTimeout(() => {
-        if (sound) {
-          const duration = sound.duration();
-          if (duration && duration !== Infinity) {
-            setDuration(duration);
-          }
-        }
-      }, 100);
-    },
-    html5: true,
-    preload: true,
     format: ["mp3"]
   });
 
@@ -148,7 +152,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         if (currentStep > 0) {
           requestAnimationFrame(fadeOut);
         } else {
-          // Kada je zvuk utišan, promeni poziciju i počni fade in
+          // When audio is muted, change position and start fade in
           sound.seek(time);
           setCurrentTime(time);
           requestAnimationFrame(fadeIn);
@@ -172,10 +176,10 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   const handleSeek = (value: number) => {
     if (Math.abs(value - currentTime) > 1) {
-      // Primeni fade samo za veće promene pozicije
+      // Apply fade only for larger position changes
       fadeAudioTo(value);
     } else {
-      // Za male promene, koristi postojeću logiku
+      // For small changes, use existing logic
       setCurrentTime(value);
       debouncedSeek(value);
     }
@@ -297,6 +301,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     if (!previousSong) return;
 
     player.setId(previousSong);
+  };
+
+  const handleLike = () => {
+    if (!user) {
+      return authModal.onOpen();
+    }
   };
 
   return (

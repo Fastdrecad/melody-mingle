@@ -13,7 +13,15 @@ const font = Figtree({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Melody Mingle",
-  description: "The ultimate destination for enjoying music!"
+  description: "The ultimate destination for enjoying music!",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+        sizes: "any"
+      }
+    ]
+  }
 };
 
 export const revalidate = 0;
@@ -27,7 +35,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={font.className} suppressHydrationWarning>
         <ToasterProvider />
         <SupabaseProvider>
           <UserProvider>

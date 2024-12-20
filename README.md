@@ -4,13 +4,18 @@ A modern web-based music streaming platform built with Next.js 14, React, TypeSc
 
 ## Features ✨
 
-- 🎵 Stream music in high quality
-- 👤 User authentication and profiles
-- ❤️ Like and save favorite songs
+- 🎵 Real-time music streaming
+- 👤 User authentication & profile management
+- 🎚️ Custom audio player with full playback controls
+- 🎧 Liked songs playlist functionality with persistent storage
 - 🎨 Modern and responsive UI
-- 🎚️ Full player controls (play, pause, skip, seek)
-- 🔍 Search songs by title and artist
+- 🔍 Search functionality
 - 📱 Mobile-friendly design
+
+## Unique Features 🌟
+
+- 🎤 Music Upload & Playlist Creation: Users can upload their own music and create custom playlists directly from their device.
+- 💖 Liked Songs: Users can like tracks from other users, and these songs will automatically be added to their "Liked Songs" playlist.
 
 ## Tech Stack 🛠️
 
@@ -19,13 +24,25 @@ A modern web-based music streaming platform built with Next.js 14, React, TypeSc
 - [Supabase](https://supabase.com/) - Backend and authentication
 - [TailwindCSS](https://tailwindcss.com/) - Styling
 - [React](https://reactjs.org/) - UI Components
+- [Shadcn](https://ui.shadcn.com/) - UI Components
+- [Zustand](https://zustand.docs.pmnd.rs/) - State Management
+
+## 💡 Technical Highlights:
+
+- Implemented custom hooks for global state management
+- Built a robust authentication system with Supabase
+- Created reusable components following DRY principles
+- Used TypeScript for type safety and better developer experience
+- Implemented real-time data synchronization
+- Optimized image loading with Next.js Image component
+- Added proper error handling and loading states
 
 ## Getting Started 🚀
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/melody-mingle.git
+git clone https://github.com/Fastdrecad/melody-mingle.git
 cd melody-mingle
 ```
 

@@ -1,4 +1,4 @@
-import { Subscription, User } from "@/types";
+import { User } from "@supabase/auth-helpers-nextjs";
 import {
   useSessionContext,
   useUser as useSupaUser
@@ -8,9 +8,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 type UserContextType = {
   accessToken: string | null;
   user: User | null;
-  userDetails: User | null;
+  userDetails: any;
   isLoading: boolean;
-  subscription: Subscription | null;
 };
 
 export const UserContext = createContext<UserContextType | undefined>(
@@ -30,45 +29,33 @@ export const MyUserContextProvider = (props: Props) => {
   const user = useSupaUser();
   const accessToken = session?.access_token ?? null;
   const [isLoadingData, setIsLoadingData] = useState(false);
-  const [userDetails, setUserDetails] = useState<User | null>(null);
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
-
-  const getUserDetails = () => supabase.from("users").select("*").single();
-  const getSubscription = () =>
-    supabase
-      .from("subscriptions")
-      .select("*, prices(*, products(*))")
-      .in("status", ["trialing", "active"])
-      .single();
+  const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
-    if (user && !isLoadingData && !userDetails && !subscription) {
+    if (user && !isLoadingData && !userDetails) {
       setIsLoadingData(true);
-      Promise.allSettled([getUserDetails(), getSubscription()]).then(
-        (results) => {
-          const [userDetailsPromise, subscriptionPromise] = results;
 
-          if (userDetailsPromise.status === "fulfilled")
-            setUserDetails(userDetailsPromise.value.data as User);
+      Promise.allSettled([
+        supabase.from("users").select("*").eq("id", user.id).single()
+      ]).then((results) => {
+        const userDetailsPromise = results[0];
 
-          if (subscriptionPromise.status === "fulfilled")
-            setSubscription(subscriptionPromise.value.data as Subscription);
-
-          setIsLoadingData(false);
+        if (userDetailsPromise.status === "fulfilled") {
+          setUserDetails(userDetailsPromise.value.data);
         }
-      );
+
+        setIsLoadingData(false);
+      });
     } else if (!user && !isLoadingUser && !isLoadingData) {
       setUserDetails(null);
-      setSubscription(null);
     }
-  }, [user, isLoadingUser]);
+  }, [user, isLoadingUser, isLoadingData, userDetails, supabase]);
 
   const value = {
     accessToken,
-    user: userDetails,
+    user,
     userDetails,
-    isLoading: isLoadingUser || isLoadingData,
-    subscription
+    isLoading: isLoadingUser || isLoadingData
   };
 
   return <UserContext.Provider value={value} {...props} />;

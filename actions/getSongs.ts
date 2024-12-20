@@ -10,7 +10,6 @@ const getSongs = async (): Promise<Song[]> => {
   const { data, error } = await supabase
     .from("songs")
     .select("*")
-    // .eq('user_id', '4385a75f-0109-4f33-adaf-826d38edcf83')
     .order("created_at", { ascending: false });
 
   if (error) console.log(error);

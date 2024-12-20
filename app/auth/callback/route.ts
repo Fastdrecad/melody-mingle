@@ -12,11 +12,7 @@ export async function GET(request: Request) {
       await supabase.auth.exchangeCodeForSession(code);
     }
 
-    // Get the site URL from environment variable or request origin
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || requestUrl.origin;
-
-    // Redirect to the home page
-    return NextResponse.redirect(siteUrl);
+    return NextResponse.redirect(new URL("/account", request.url));
   } catch (error) {
     console.error("Auth callback error:", error);
     return NextResponse.redirect(`${request.url}/error`);
