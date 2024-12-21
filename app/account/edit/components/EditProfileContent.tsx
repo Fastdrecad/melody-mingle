@@ -2,7 +2,10 @@
 
 import Button from "@/components/Button";
 import { useUser } from "@/hooks/useUser";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import {
+  useSupabaseClient,
+  useUser as useSupaUser
+} from "@supabase/auth-helpers-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,6 +16,7 @@ import { FaUser } from "react-icons/fa";
 const EditProfileContent = () => {
   const router = useRouter();
   const { userDetails, isLoading, user } = useUser();
+  const supabaseUser = useSupaUser();
   const supabaseClient = useSupabaseClient();
   const [isUploading, setIsUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string>("");
@@ -179,7 +183,7 @@ const EditProfileContent = () => {
             <input
               type="email"
               disabled
-              value={user?.email || ""}
+              value={supabaseUser?.email || ""}
               className="bg-neutral-700 border border-transparent p-2 rounded-md text-neutral-400"
             />
           </div>

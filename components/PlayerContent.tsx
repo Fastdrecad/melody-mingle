@@ -3,9 +3,7 @@
 import Slider from "@/components/Slider";
 import useAuthModal from "@/hooks/useAuthModal";
 import useDebounce from "@/hooks/useDebounce";
-import useLikedSongs from "@/hooks/useLikedSongs";
 import usePlayer from "@/hooks/usePlayer";
-import { useQueueNavigation } from "@/hooks/useQueueNavigation";
 import { useUser } from "@/hooks/useUser";
 import { Song } from "@/types";
 import debounce from "lodash/debounce";
@@ -46,18 +44,14 @@ const RepeatIcon = ({ mode }: { mode: "off" | "one" | "all" }) => {
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const player = usePlayer();
-  const { getNextSong, getPreviousSong } = useQueueNavigation(player); // Call useQueueNavigation
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [tempPosition, setTempPosition] = useState<number | null>(null);
   const debouncedPosition = useDebounce(tempPosition, 150);
   const [isVolumeHovered, setIsVolumeHovered] = useState(false);
-  const [volume, setVolume] = useState(1);
-  const [isReady, setIsReady] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const { user } = useUser();
   const authModal = useAuthModal();
-  const { likedSongIds } = useLikedSongs();
 
   const Icon = player.isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon =
@@ -69,7 +63,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       ? HiSpeakerWave
       : HiOutlineSpeakerWave;
 
-  const [play, { pause, sound }] = useSound(songUrl, {
+  const [play, { sound }] = useSound(songUrl, {
     volume: player.volume,
     onplay: () => player.setIsPlaying(true),
     onend: () => {

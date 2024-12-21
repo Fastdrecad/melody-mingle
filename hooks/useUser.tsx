@@ -53,7 +53,7 @@ export const MyUserContextProvider = (props: Props) => {
 
   const value = {
     accessToken,
-    user,
+    user: userDetails,
     userDetails,
     isLoading: isLoadingUser || isLoadingData
   };
